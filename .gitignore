@@ -1,5 +1,5 @@
 # Build artifacts
-esxport
+/esxport
 dist/
 coverage.out
 
