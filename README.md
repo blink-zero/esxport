@@ -226,8 +226,6 @@ Labels: `host_name`, `target`
 
 Labels: `vm_name`, `guest_os`, `guest_ip`, `esxi_host`, `target`
 
-> **Breaking change in v0.2.0**: VM metrics now include `guest_os`, `guest_ip`, and `esxi_host` labels. Update your PromQL queries and alert rules accordingly.
-
 | Metric | Type | Description |
 |--------|------|-------------|
 | `esxport_vm_power_state` | gauge | Power state (1=on, 0=other) |
