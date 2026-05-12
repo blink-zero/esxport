@@ -1,0 +1,66 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: ./cmd/esxport
+    binary: esxport
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/blink-zero/esxport/internal/version.Version={{.Version}}
+      - -X github.com/blink-zero/esxport/internal/version.Commit={{.Commit}}
+      - -X github.com/blink-zero/esxport/internal/version.BuildDate={{.Date}}
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+dockers:
+  - image_templates:
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-amd64"
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/amd64"
+    dockerfile: Dockerfile
+  - image_templates:
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-arm64"
+    use: buildx
+    build_flag_templates:
+      - "--platform=linux/arm64"
+    goarch: arm64
+    dockerfile: Dockerfile
+
+docker_manifests:
+  - name_template: "ghcr.io/blink-zero/esxport:{{ .Version }}"
+    image_templates:
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-amd64"
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-arm64"
+  - name_template: "ghcr.io/blink-zero/esxport:latest"
+    image_templates:
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-amd64"
+      - "ghcr.io/blink-zero/esxport:{{ .Version }}-arm64"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^chore:"
+      - "^test:"

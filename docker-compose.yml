@@ -1,0 +1,11 @@
+services:
+  esxport:
+    image: ghcr.io/blink-zero/esxport:latest
+    ports:
+      - "9272:9272"
+    environment:
+      - ESXPORT_HOST=vcenter.example.com
+      - ESXPORT_USERNAME=readonly@vsphere.local
+      - ESXPORT_PASSWORD=secret
+      - ESXPORT_IGNORE_SSL=true
+    restart: unless-stopped

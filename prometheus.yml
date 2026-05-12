@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 60s
+
+scrape_configs:
+  - job_name: esxport
+    scrape_timeout: 55s
+    static_configs:
+      - targets: ["esxport:9272"]

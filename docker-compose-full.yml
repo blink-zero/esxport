@@ -1,0 +1,36 @@
+services:
+  esxport:
+    image: ghcr.io/blink-zero/esxport:latest
+    ports:
+      - "9272:9272"
+    volumes:
+      - ./config.yml:/etc/esxport/config.yml:ro
+    command: ["serve", "--config", "/etc/esxport/config.yml"]
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      - esxport
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+  grafana_data:

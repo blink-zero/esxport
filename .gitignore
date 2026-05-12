@@ -1,0 +1,24 @@
+# Build artifacts
+esxport
+dist/
+coverage.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Dev tooling
+.claude/
+CLAUDE.md
+memory/
+docs/plans/
+
+# claude-autopilot session memory
+memory/*.md
+!memory/.gitkeep
+
+# Serena MCP
+.serena/
+docs/plans/
+memory/

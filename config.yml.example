@@ -1,0 +1,30 @@
+# esxport configuration example
+# See README.md for full reference
+
+targets:
+  - host: vcenter.example.com
+    username: readonly@vsphere.local
+    password: secret
+    ignore_ssl: true
+    # Optional: limit collection
+    collect:
+      hosts: true
+      vms: true
+      datastores: true
+      snapshots: true
+      clusters: true
+    # Optional: regex filters
+    filters:
+      vm_include: ".*"
+      vm_exclude: "template-.*"
+      host_include: ".*"
+
+# Server settings
+server:
+  port: 9272
+  metrics_path: /metrics
+
+# Scrape settings
+scrape:
+  timeout: 30s
+  concurrency: 4
